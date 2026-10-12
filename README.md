@@ -386,18 +386,21 @@ See [SECURITY.md](SECURITY.md) for the threat model and known limitations.
 
 ## What I learned
 
-- **Degrees are not metres.** `.area` on lon/lat coordinates returns "square degrees". Seeing a 1 km² square
-  measured correctly only after reprojecting made the importance of CRS handling concrete.
-- **No projection is perfect.** UTM is excellent but still differs from the true ellipsoidal area by ~0.1-0.2%
-  away from the central meridian. That is why the API returns both numbers and flags multi-zone features.
-- **Untrusted files are the real attack surface.** A ZIP can lie about its own size, and XML can read local files.
-  Designing the upload path defensively (allow-lists, byte-counting, `defusedxml`) mattered more than the framework.
-- **Framework behaviour matters.** FastAPI converts exceptions raised while parsing request bodies into a generic 400,
-  so oversize uploads are rejected earlier, from the `Content-Length` header, in an ASGI middleware.
-- **Real data is messy.** Altitude values, invalid polygons, empty geometries and a missing `.prj` all appeared in
-  tests, and each one needed an explicit, graceful behaviour instead of an exception.
-- **Tests make the claims believable.** Constructing geometries in UTM metres first gave exact expected values
-  (for example, a 1000 m square must measure 1,000,000 m²), which made the CRS tests trustworthy.
+- **Degrees are not metres.** My first instinct was to call `.area` on the coordinates straight from the file, but
+  that gives "square degrees", which is meaningless. Measuring a 1 km² square only gave the right answer after I
+  re-projected it to UTM. This is the main thing the assignment taught me about CRS handling.
+- **No projection is perfect.** Even UTM differs from the true ellipsoidal area by about 0.1-0.2% when a feature is
+  far from the zone's central meridian. So I return the geodesic value next to the projected one, and add a note
+  when a feature spans more than one zone.
+- **Uploaded files cannot be trusted.** A ZIP can lie about its own size, and XML can be used to read local files.
+  I spent more time on the upload path (allow-lists, counting real bytes, `defusedxml`) than on the framework,
+  and writing a test for each attack made me sure the protections actually work.
+- **Frameworks have surprises.** FastAPI turned an error raised while reading the request body into a generic 400,
+  so my "file too large" response never appeared. I fixed it by checking `Content-Length` earlier, in a middleware.
+- **Real data is messy.** Altitude values, invalid polygons, empty geometries and a missing `.prj` all came up while
+  testing. Each one needed a clear, planned behaviour instead of a crash.
+- **Good tests need known answers.** I built test shapes in UTM metres first, so the expected result was exact
+  (a 1000 m square must be 1,000,000 m²). That made the CRS tests much easier to trust.
 
 ## Future scope
 
