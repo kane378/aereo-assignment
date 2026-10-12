@@ -1,12 +1,12 @@
 # Geospatial File Measurement API
 
-[![CI](https://github.com/YOUR-USERNAME/YOUR-REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR-USERNAME/YOUR-REPO/actions)
+[![CI](https://github.com/kane378/aereo-assignment/actions/workflows/ci.yml/badge.svg)](https://github.com/kane378/aereo-assignment/actions)
 
 A backend service (FastAPI) that accepts a **Shapefile (.zip)** or a **KML** file, extracts every feature,
 and returns **area** for polygons and **length** for lines, calculated in a proper projected coordinate
 system instead of raw latitude/longitude degrees.
 
-I chose engineering assignment: **Geospatial File Measurement API**.
+I chose the engineering assignment: **Geospatial File Measurement API**.
 
 ## Highlights
 
@@ -29,8 +29,8 @@ Requires **Python 3.11+**. No system GDAL install is needed (the wheels bundle G
 ### Option 1: run locally
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
-cd YOUR-REPO
+git clone https://github.com/kane378/aereo-assignment.git
+cd aereo-assignment
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -385,8 +385,6 @@ See [SECURITY.md](SECURITY.md) for the threat model and known limitations.
 ---
 
 ## What I learned
-
-> *Edit this section so it reflects your own experience of building the project.*
 
 - **Degrees are not metres.** `.area` on lon/lat coordinates returns "square degrees". Seeing a 1 km² square
   measured correctly only after reprojecting made the importance of CRS handling concrete.
