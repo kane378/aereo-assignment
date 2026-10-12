@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pyproj import network
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
@@ -86,6 +86,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def _unhandled(_request: Request, exc: Exception):
         logger.exception("Unhandled error", exc_info=exc)
         return JSONResponse({"detail": "Internal server error"}, status_code=500)
+
+    @app.get("/", include_in_schema=False)
+    def root():
+        return RedirectResponse(url="/docs" if settings.enable_docs else "/health")
 
     @app.get("/health", tags=["meta"], summary="Liveness probe")
     def health():
