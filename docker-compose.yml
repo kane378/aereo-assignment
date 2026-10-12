@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Values come from your shell or a local .env file (see .env.example).
+      API_KEYS: ${API_KEYS:-}
+      ENABLE_DOCS: ${ENABLE_DOCS:-true}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-*}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-25}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-120}
+      UPLOAD_RATE_LIMIT_PER_MINUTE: ${UPLOAD_RATE_LIMIT_PER_MINUTE:-10}
+    volumes:
+      - geo_data:/app/data
+    # --- container hardening ---
+    read_only: true            # immutable root filesystem
+    tmpfs:
+      - /tmp:size=512m         # uploads are processed here and wiped afterwards
+    cap_drop:
+      - ALL                    # no Linux capabilities needed
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+volumes:
+  geo_data:

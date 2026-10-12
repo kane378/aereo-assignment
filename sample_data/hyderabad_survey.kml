@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Hyderabad Site Survey</name>
+<Placemark><name>Plot A - Gachibowli</name><description>Land use: Commercial</description><Polygon><outerBoundaryIs><LinearRing><coordinates>78.3526627,17.4401501,0 78.3526301,17.4424075,0 78.3488674,17.4423574,0 78.3489000,17.4401000,0 78.3526627,17.4401501,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>Plot B - Madhapur</name><description>Land use: Residential</description><Polygon><outerBoundaryIs><LinearRing><coordinates>78.3938223,17.4480370,0 78.3937837,17.4507459,0 78.3909614,17.4507089,0 78.3910000,17.4480000,0 78.3938223,17.4480370,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>Plot C - Kondapur</name><description>Land use: Mixed use</description><Polygon><outerBoundaryIs><LinearRing><coordinates>78.3647041,17.4650624,0 78.3646885,17.4661460,0 78.3599844,17.4660835,0 78.3600000,17.4650000,0 78.3647041,17.4650624,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+<Placemark><name>Access Road</name><LineString><coordinates>78.3480000,17.4390000,0 78.3900000,17.4470000,0 78.4300000,17.4400000,0</coordinates></LineString></Placemark>
+<Placemark><name>Benchmark 1</name><Point><coordinates>78.35,17.441,0</coordinates></Point></Placemark>
+<Placemark><name>Water Tank</name><Point><coordinates>78.3925,17.4495,0</coordinates></Point></Placemark>
+</Document></kml>

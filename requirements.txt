@@ -1,0 +1,14 @@
+# Runtime dependencies (floors are the versions this project was tested with).
+# Requires Python 3.11+. The geospatial wheels bundle GDAL/GEOS/PROJ, so no system packages are needed.
+fastapi>=0.143,<1.0
+uvicorn>=0.54,<1.0
+python-multipart>=0.0.32,<1.0
+sqlalchemy>=2.1,<3.0
+pydantic-settings>=2.15,<3.0
+geopandas>=1.2,<2.0
+pyogrio>=0.13,<1.0
+shapely>=2.2,<3.0
+pyproj>=3.8,<4.0
+numpy>=2.4,<3.0
+pandas>=3.0,<4.0
+defusedxml>=0.7.1,<0.8
