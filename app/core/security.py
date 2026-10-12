@@ -21,6 +21,11 @@ _DOCS_CSP = (
     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
     "worker-src blob:; frame-ancestors 'none'"
 )
+# The bundled web UI only loads its own script/style, and only talks to this server.
+_UI_CSP = (
+    "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
+    "connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"
+)
 _DOCS_PATHS = ("/docs", "/redoc")
 
 
@@ -30,11 +35,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
         is_docs = request.url.path.startswith(_DOCS_PATHS)
+        is_ui = request.url.path == "/" or request.url.path.startswith("/ui/")
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Permissions-Policy"] = "geolocation=(), camera=(), microphone=()"
-        response.headers["Content-Security-Policy"] = _DOCS_CSP if is_docs else _API_CSP
+        response.headers["Content-Security-Policy"] = _DOCS_CSP if is_docs else _UI_CSP if is_ui else _API_CSP
         response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
         response.headers.setdefault("Cache-Control", "no-store")
         response.headers["X-Request-ID"] = uuid.uuid4().hex

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geo Measure</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/ui/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap bar">
+      <h1>Geo Measure</h1>
+      <nav>
+        <a href="/docs">API docs</a>
+        <label class="key">API key
+          <input id="apiKey" type="password" placeholder="only if enabled" autocomplete="off">
+        </label>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Upload a file</h2>
+      <p class="muted">A <b>Shapefile</b> (.zip with .shp/.shx/.dbf/.prj) or a <b>KML</b> file. Areas and lengths are measured in the UTM zone of each feature, not in degrees.</p>
+      <form id="uploadForm">
+        <label id="drop" class="drop" for="fileInput" tabindex="0">
+          <input id="fileInput" type="file" accept=".zip,.kml" hidden>
+          <span id="dropText">Drop a .zip or .kml here, or click to choose</span>
+        </label>
+        <div class="row">
+          <label>CRS if the file has none
+            <input id="assumeCrs" type="text" placeholder="EPSG:4326" autocomplete="off">
+          </label>
+          <button id="go" type="submit" disabled>Upload &amp; measure</button>
+        </div>
+      </form>
+      <p id="msg" class="msg" role="status"></p>
+    </section>
+
+    <section id="result" class="card" hidden>
+      <div class="head">
+        <div>
+          <h2 id="rName"></h2>
+          <p class="muted" id="rMeta"></p>
+        </div>
+        <button id="csv" type="button" class="ghost">Download CSV</button>
+      </div>
+      <div id="stats" class="stats"></div>
+      <svg id="map" class="map" viewBox="0 0 600 340" role="img" aria-label="Feature preview"></svg>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Layer</th><th>Type</th>
+              <th class="n">Area (m²)</th><th class="n">Hectares</th><th class="n">Length (m)</th>
+              <th class="n">Geodesic area</th><th class="n">Geodesic length</th>
+              <th>UTM CRS</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="head">
+        <h2>Previous uploads</h2>
+        <button id="refresh" type="button" class="ghost">Refresh</button>
+      </div>
+      <ul id="history" class="history"></ul>
+    </section>
+  </main>
+  <script src="/ui/app.js"></script>
+</body>
+</html>

@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
     # --- Deployment hardening ---
     enable_docs: bool = True
+    enable_ui: bool = True 
     allowed_hosts: str = "*"  # comma-separated; "*" allows any
     cors_origins: str = ""  # comma-separated; empty = CORS disabled
 

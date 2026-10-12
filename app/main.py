@@ -5,10 +5,12 @@ Run with:  uvicorn app.main:create_app --factory
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pyproj import network
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
@@ -20,6 +22,7 @@ from app.database import create_session_factory
 from app.models import Base
 
 logger = logging.getLogger("geo_api")
+WEB_DIR = Path(__file__).parent / "web"
 
 DESCRIPTION = """
 Upload a **Shapefile (.zip)** or **KML** and get back every feature with its geometry type,
@@ -89,7 +92,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/", include_in_schema=False)
     def root():
+        if settings.enable_ui:
+            return FileResponse(WEB_DIR / "index.html")
         return RedirectResponse(url="/docs" if settings.enable_docs else "/health")
+
+    if settings.enable_ui:
+        app.mount("/ui", StaticFiles(directory=WEB_DIR), name="ui")
 
     @app.get("/health", tags=["meta"], summary="Liveness probe")
     def health():
